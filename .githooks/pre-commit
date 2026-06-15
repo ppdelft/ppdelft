@@ -1,0 +1,12 @@
+#!/bin/sh
+set -e
+
+# Keep npm lockfile in sync with package.json
+if [ -f package.json ]; then
+  staged_pkg=$(git diff --cached --name-only | grep -x "package.json" || true)
+  if [ -n "$staged_pkg" ] || [ ! -f package-lock.json ]; then
+    echo "→ package.json changed — updating package-lock.json..."
+    npm install --package-lock-only --audit=false --fund=false 2>/dev/null
+    git add package-lock.json
+  fi
+fi

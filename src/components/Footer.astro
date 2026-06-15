@@ -1,0 +1,33 @@
+<footer class="footer">
+  <div class="container footer__inner">
+    <p class="footer__brand">Dromerij — Atelier voor handgemaakt keramiek</p>
+    <p class="footer__copy">&copy; {new Date().getFullYear()} Dromerij. Alle rechten voorbehouden.</p>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    border-top: 1px solid var(--color-stone);
+    padding: 2.5rem 0;
+    margin-top: 5rem;
+  }
+
+  .footer__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    text-align: center;
+  }
+
+  .footer__brand {
+    font-family: var(--font-display);
+    color: var(--color-charcoal);
+    font-size: 1.1rem;
+  }
+
+  .footer__copy {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+  }
+</style>

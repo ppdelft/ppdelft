@@ -1,0 +1,43 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import GalleryCard from "../../components/GalleryCard.astro";
+import { getCollection } from "astro:content";
+
+const pieces = await getCollection("gallery");
+---
+
+<Layout title="Galerij" description="Ontdek de collectie handgemaakt keramiek van Dromerij">
+  <section class="section">
+    <div class="container">
+      <h1 class="section__title">Galerij</h1>
+      <p class="section__subtitle">
+        Een selectie van recent werk — elk stuk uniek, met de hand gemaakt.
+      </p>
+
+      {pieces.length > 0 ? (
+        <div class="grid">
+          {pieces.map((piece) => <GalleryCard piece={piece} />)}
+        </div>
+      ) : (
+        <p class="empty">
+          Nog geen stukken in de galerij. Binnenkort meer!
+        </p>
+      )}
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+    gap: 2rem;
+  }
+
+  .empty {
+    text-align: center;
+    color: var(--color-text-muted);
+    font-style: italic;
+    padding: 3rem 0;
+  }
+</style>

@@ -1,0 +1,63 @@
+---
+const pages = [
+  { href: "/", label: "Home" },
+  { href: "/gallery", label: "Galerij" },
+  { href: "/about", label: "Over" },
+  { href: "/contact", label: "Contact" },
+];
+---
+
+<header class="header">
+  <nav class="header__nav container">
+    <a href="/" class="header__logo">Dromerij</a>
+    <ul class="header__links">
+      {pages.map(({ href, label }) => (
+        <li>
+          <a href={href} class="header__link">{label}</a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+</header>
+
+<style>
+  .header {
+    padding: 1.5rem 0;
+    border-bottom: 1px solid var(--color-stone);
+  }
+
+  .header__nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .header__logo {
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    color: var(--color-charcoal);
+    letter-spacing: 0.02em;
+  }
+
+  .header__logo:hover {
+    color: var(--color-clay);
+  }
+
+  .header__links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .header__link {
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .header__link:hover {
+    color: var(--color-charcoal);
+  }
+</style>

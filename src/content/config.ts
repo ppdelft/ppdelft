@@ -14,6 +14,7 @@ export const collections = {
       featured: z.boolean().default(false),
       collection: z.string().optional(),
       tags: z.array(z.string()).default([]),
+      category: z.string().default("keramiek"),
     }),
   }),
 };

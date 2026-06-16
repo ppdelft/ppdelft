@@ -7,21 +7,48 @@ import Layout from "../layouts/Layout.astro";
     <div class="container container--narrow hero__content">
       <h1 class="hero__title">Dromerij</h1>
       <p class="hero__subtitle">
-        Atelier voor handgemaakt keramiek — waar klei vorm krijgt en dromen
-        gebakken worden.
+        Atelier voor keramiek en beeldende kunst.
       </p>
-      <a href={import.meta.env.BASE_URL + "/gallery"} class="btn">Bekijk het werk</a>
+      <a href={import.meta.env.BASE_URL + "/gallery/keramiek"} class="btn">Bekijk het werk</a>
     </div>
   </section>
 
   <section class="section">
     <div class="container container--narrow">
-      <h2 class="section__title">Welkom</h2>
-      <p style="text-align: center; color: var(--color-text-muted); font-size: 1.1rem; max-width: 36rem; margin: 0 auto;">
-        Elk stuk wordt met de hand gedraaid, met aandacht voor vorm, textuur en
-        functionaliteit. Ontdek de collectie en neem contact op voor een
-        atelierbezoek.
-      </p>
+      <h2 class="section__title">Eklectisch Aanval</h2>
+      <div class="about-text">
+        <p>Dit is het bijnaam van mijn atelier. Lekker gek. Steeds anders.</p>
+
+        <hr class="divider">
+
+        <p>
+          Hier maak ik van alles maar tegenwoordig voornamelijk keramiek en
+          decoratie voor mijn huis aan de Doelenstraat.
+        </p>
+
+        <hr class="divider">
+
+        <p>
+          Ik verkoop normaal gesproken alleen via winkels in delft en in een
+          paar markten elke jaar, dus niet aan huis. Wel af en toe krijg ik
+          verzoeken voor maatwerk of cadeaus, en die doe ik graag in overleg met
+          jou.
+        </p>
+
+        <p>Tegenwoordig verkoop ik mijn werk bij:</p>
+        <ul>
+          <li><a href="https://droomconceptstore.nl">Droom Conceptstore</a></li>
+          <li>
+            <a href="https://stadskaarsenmakerijdelft.nl/">Stadskaarsenmakerij Delft</a>
+          </li>
+        </ul>
+
+        <p>En op:</p>
+        <ul>
+          <li><a href="https://museumvanmarken.nl/">Van Markendag</a></li>
+          <li>Koningsdag</li>
+        </ul>
+      </div>
     </div>
   </section>
 </Layout>
@@ -49,5 +76,35 @@ import Layout from "../layouts/Layout.astro";
     color: var(--color-text-muted);
     line-height: 1.8;
     max-width: 32rem;
+  }
+
+  .about-text {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: var(--color-text-muted);
+    max-width: 36rem;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .about-text p {
+    margin-bottom: 0;
+  }
+
+  .about-text ul {
+    list-style: none;
+    padding: 0;
+    margin: 0.5rem 0 1.5rem;
+  }
+
+  .about-text li {
+    margin-bottom: 0.25rem;
+  }
+
+  .divider {
+    border: none;
+    border-top: 1px solid var(--color-stone);
+    margin: 1.5rem auto;
+    max-width: 4rem;
   }
 </style>

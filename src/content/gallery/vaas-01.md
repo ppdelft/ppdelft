@@ -9,4 +9,5 @@ sold: true
 featured: false
 collection: "Vazen"
 tags: ["draaien", "kobalt", "opbouw"]
+category: keramiek
 ---

@@ -4,40 +4,275 @@ import GalleryCard from "../../components/GalleryCard.astro";
 import { getCollection } from "astro:content";
 
 const pieces = await getCollection("gallery");
+pieces.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const collections = [
+  ...new Set(pieces.flatMap((p) => (p.data.collection ? [p.data.collection] : []))),
+].sort();
+
+const tags = [...new Set(pieces.flatMap((p) => p.data.tags))].sort();
+
+// Count per collection / tag for the sidebar badges
+const collectionCounts = Object.fromEntries(
+  collections.map((c) => [c, pieces.filter((p) => p.data.collection === c).length])
+);
+const tagCounts = Object.fromEntries(
+  tags.map((t) => [t, pieces.filter((p) => p.data.tags.includes(t)).length])
+);
 ---
 
 <Layout title="Galerij" description="Ontdek de collectie handgemaakt keramiek van Dromerij">
-  <section class="section">
-    <div class="container">
-      <h1 class="section__title">Galerij</h1>
-      <p class="section__subtitle">
-        Een selectie van recent werk — elk stuk uniek, met de hand gemaakt.
-      </p>
+  <div class="gallery-shell">
+    <aside class="sidebar">
+      <h1 class="sidebar__title">Galerij</h1>
 
+      {collections.length > 0 && (
+        <section class="sidebar__section">
+          <h2 class="sidebar__heading">Collecties</h2>
+          <ul class="sidebar__list">
+            <li>
+              <a href="/gallery" class="sidebar__link" data-filter="all">
+                Alles
+                <span class="sidebar__count">{pieces.length}</span>
+              </a>
+            </li>
+            {collections.map((c) => (
+              <li>
+                <a
+                  href={`/gallery?collection=${encodeURIComponent(c)}`}
+                  class="sidebar__link"
+                  data-filter-collection={c}
+                >
+                  {c}
+                  <span class="sidebar__count">{collectionCounts[c]}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {tags.length > 0 && (
+        <section class="sidebar__section">
+          <h2 class="sidebar__heading">Tags</h2>
+          <ul class="sidebar__list">
+            {tags.map((t) => (
+              <li>
+                <a
+                  href={`/gallery?tag=${encodeURIComponent(t)}`}
+                  class="sidebar__link"
+                  data-filter-tag={t}
+                >
+                  {t}
+                  <span class="sidebar__count">{tagCounts[t]}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+    </aside>
+
+    <main class="gallery-main">
       {pieces.length > 0 ? (
-        <div class="grid">
-          {pieces.map((piece) => <GalleryCard piece={piece} />)}
+        <div class="grid" id="gallery-grid">
+          {pieces.map((piece) => (
+            <div
+              class="piece-wrapper"
+              data-collection={piece.data.collection ?? ""}
+              data-tags={piece.data.tags.join(",")}
+            >
+              <GalleryCard piece={piece} />
+            </div>
+          ))}
         </div>
       ) : (
-        <p class="empty">
-          Nog geen stukken in de galerij. Binnenkort meer!
-        </p>
+        <p class="empty">Nog geen stukken in de galerij. Binnenkort meer!</p>
       )}
-    </div>
-  </section>
+      <p class="empty" id="no-results" hidden>
+        Geen stukken gevonden voor deze selectie.
+      </p>
+    </main>
+  </div>
 </Layout>
 
+<script>
+  function applyFilter() {
+    const params = new URLSearchParams(location.search);
+    const activeCollection = params.get("collection");
+    const activeTag = params.get("tag");
+
+    // Filter pieces
+    let visible = 0;
+    document.querySelectorAll<HTMLElement>(".piece-wrapper").forEach((el) => {
+      const collection = el.dataset.collection ?? "";
+      const tags = el.dataset.tags ? el.dataset.tags.split(",") : [];
+
+      let show = true;
+      if (activeCollection) show = collection === activeCollection;
+      else if (activeTag) show = tags.includes(activeTag);
+
+      el.hidden = !show;
+      if (show) visible++;
+    });
+
+    const noResults = document.getElementById("no-results");
+    if (noResults) noResults.hidden = visible > 0;
+
+    // Active state on sidebar links
+    document.querySelectorAll<HTMLElement>(".sidebar__link").forEach((el) => {
+      el.classList.remove("active");
+    });
+
+    if (activeCollection) {
+      document
+        .querySelector<HTMLElement>(`[data-filter-collection="${CSS.escape(activeCollection)}"]`)
+        ?.classList.add("active");
+    } else if (activeTag) {
+      document
+        .querySelector<HTMLElement>(`[data-filter-tag="${CSS.escape(activeTag)}"]`)
+        ?.classList.add("active");
+    } else {
+      document.querySelector<HTMLElement>("[data-filter='all']")?.classList.add("active");
+    }
+  }
+
+  applyFilter();
+  window.addEventListener("popstate", applyFilter);
+</script>
+
 <style>
+  .gallery-shell {
+    display: grid;
+    grid-template-columns: 14rem 1fr;
+    gap: 4rem;
+    max-width: var(--content-width);
+    margin: 0 auto;
+    padding: 4rem var(--gap) 5rem;
+    align-items: start;
+  }
+
+  /* ── Sidebar ── */
+  .sidebar {
+    position: sticky;
+    top: 2rem;
+  }
+
+  .sidebar__title {
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+  }
+
+  .sidebar__section {
+    margin-bottom: 2rem;
+  }
+
+  .sidebar__heading {
+    font-family: var(--font-body);
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-text-muted);
+    margin-bottom: 0.6rem;
+  }
+
+  .sidebar__list {
+    list-style: none;
+  }
+
+  .sidebar__link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.3rem 0 0.3rem 0.75rem;
+    font-size: 0.9rem;
+    color: var(--color-text);
+    border-left: 2px solid transparent;
+    transition: color 0.15s, border-color 0.15s;
+  }
+
+  .sidebar__link:hover {
+    color: var(--color-clay);
+    border-left-color: var(--color-clay-light);
+  }
+
+  .sidebar__link.active {
+    color: var(--color-clay);
+    border-left-color: var(--color-clay);
+    font-weight: 500;
+  }
+
+  .sidebar__count {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    background: var(--color-stone);
+    padding: 0.1rem 0.45rem;
+    border-radius: 999px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .sidebar__link.active .sidebar__count {
+    background: var(--color-clay-light);
+    color: var(--color-charcoal);
+  }
+
+  /* ── Grid ── */
+  .gallery-main {
+    min-width: 0;
+  }
+
   .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
     gap: 2rem;
   }
 
   .empty {
-    text-align: center;
     color: var(--color-text-muted);
     font-style: italic;
     padding: 3rem 0;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 680px) {
+    .gallery-shell {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      padding-top: 2rem;
+    }
+
+    .sidebar {
+      position: static;
+    }
+
+    .sidebar__title {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .sidebar__section {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar__list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .sidebar__link {
+      padding: 0.25rem 0.65rem;
+      border-left: none;
+      border: 1px solid var(--color-stone);
+      font-size: 0.82rem;
+      gap: 0.35rem;
+    }
+
+    .sidebar__link.active {
+      border-color: var(--color-clay);
+      background: var(--color-clay-light);
+    }
   }
 </style>

@@ -7,4 +7,6 @@ dimensions: "ø 12 cm, h 7 cm"
 technique: "Draaien, craquelé-glazuur"
 sold: false
 featured: true
+collection: "Kommen"
+tags: ["draaien", "craquelé", "oker"]
 ---

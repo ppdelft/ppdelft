@@ -7,4 +7,6 @@ dimensions: "h 32 cm"
 technique: "Opbouw, kobalglazuur"
 sold: true
 featured: false
+collection: "Vazen"
+tags: ["draaien", "kobalt", "opbouw"]
 ---

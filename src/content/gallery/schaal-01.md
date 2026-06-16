@@ -7,6 +7,8 @@ dimensions: "ø 24 cm"
 technique: "Draaien, matglazuur"
 sold: false
 featured: true
+collection: "Schalen"
+tags: ["draaien", "mat", "aarde"]
 ---
 
 Gedraaid op de schijf, voorzien van een mat transparant glazuur dat de

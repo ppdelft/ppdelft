@@ -12,6 +12,8 @@ export const collections = {
       technique: z.string().optional(),
       sold: z.boolean().default(false),
       featured: z.boolean().default(false),
+      collection: z.string().optional(),
+      tags: z.array(z.string()).default([]),
     }),
   }),
 };

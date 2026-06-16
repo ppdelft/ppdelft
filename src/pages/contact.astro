@@ -11,25 +11,14 @@ import Layout from "../layouts/Layout.astro";
         bespreken? Laat van je horen.
       </p>
 
-      <form class="form" name="contact" netlify>
-        <label class="form__field">
-          <span>Naam</span>
-          <input type="text" name="name" required />
-        </label>
-        <label class="form__field">
-          <span>E-mail</span>
-          <input type="email" name="email" required />
-        </label>
-        <label class="form__field">
-          <span>Bericht</span>
-          <textarea name="message" rows="5" required></textarea>
-        </label>
-        <button type="submit" class="btn">Versturen</button>
-      </form>
+      Dit website is statisch gegenereerd uit text files (<a href="https://github.com/ppdelft/ppdelft">zie broncode</a>),
+      dus is er geen ingebouwde contactformulier en moet je zelf ouderwets een mailtje sturen.
+
+      <hr class="divider">
 
       <div class="contact-info">
         <p>Dromerij Atelier</p>
-        <p class="contact-info__email">hallo@dromerij.nl</p>
+        <p class="contact-info__email">pietro.potter.delft [at] gmail.com</p>
       </div>
     </div>
   </section>
@@ -85,4 +74,12 @@ import Layout from "../layouts/Layout.astro";
     font-size: 1rem;
     margin-top: 0.25rem;
   }
+
+  .divider {
+    border: none;
+    border-top: 1px solid var(--color-stone);
+    margin: 1.5rem auto;
+    max-width: 4rem;
+  }
+
 </style>

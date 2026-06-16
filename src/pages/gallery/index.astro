@@ -31,7 +31,7 @@ const tagCounts = Object.fromEntries(
           <h2 class="sidebar__heading">Collecties</h2>
           <ul class="sidebar__list">
             <li>
-              <a href="/gallery" class="sidebar__link" data-filter="all">
+              <a href={import.meta.env.BASE_URL + "/gallery"} class="sidebar__link" data-filter="all">
                 Alles
                 <span class="sidebar__count">{pieces.length}</span>
               </a>
@@ -39,7 +39,7 @@ const tagCounts = Object.fromEntries(
             {collections.map((c) => (
               <li>
                 <a
-                  href={`/gallery?collection=${encodeURIComponent(c)}`}
+                  href={`${import.meta.env.BASE_URL}/gallery?collection=${encodeURIComponent(c)}`}
                   class="sidebar__link"
                   data-filter-collection={c}
                 >
@@ -59,7 +59,7 @@ const tagCounts = Object.fromEntries(
             {tags.map((t) => (
               <li>
                 <a
-                  href={`/gallery?tag=${encodeURIComponent(t)}`}
+                  href={`${import.meta.env.BASE_URL}/gallery?tag=${encodeURIComponent(t)}`}
                   class="sidebar__link"
                   data-filter-tag={t}
                 >

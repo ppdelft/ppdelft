@@ -1,15 +1,16 @@
 ---
+const base = import.meta.env.BASE_URL;
 const pages = [
-  { href: "/", label: "Home" },
-  { href: "/gallery", label: "Galerij" },
-  { href: "/about", label: "Over" },
-  { href: "/contact", label: "Contact" },
+  { href: base + "/", label: "Home" },
+  { href: base + "/gallery", label: "Galerij" },
+  { href: base + "/about", label: "Over" },
+  { href: base + "/contact", label: "Contact" },
 ];
 ---
 
 <header class="header">
   <nav class="header__nav container">
-    <a href="/" class="header__logo">Dromerij</a>
+    <a href={import.meta.env.BASE_URL + "/"} class="header__logo">Dromerij</a>
     <ul class="header__links">
       {pages.map(({ href, label }) => (
         <li>
